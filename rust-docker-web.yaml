@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rust-docker-web
+  labels:
+    app: rust-docker-web
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: rust-docker-web
+  template:
+    metadata:
+      labels:
+        app: rust-docker-web
+    spec:
+      containers:
+      - name: rust-docker-web
+        image: ratulb/rust-debian
+        ports:
+        - containerPort: 50051
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: rust-docker-web
+  labels:
+    app: rust-docker-web
+spec:
+  type: NodePort
+  ports:
+  - port: 8080
+    targetPort: 50051
+    protocol: TCP
+    name: http
+  selector:
+    app: rust-docker-web
+---
