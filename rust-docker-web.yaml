@@ -1,21 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: rust-docker-web
+  name: deployment
   labels:
-    app: rust-docker-web
+    app: rust
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: rust-docker-web
+      app: rust-pod
   template:
     metadata:
       labels:
-        app: rust-docker-web
+        app: rust-pod
     spec:
       containers:
-      - name: rust-docker-web
+      - name: rust-container
         image: ratulb/rust-debian
         ports:
         - containerPort: 50051
@@ -24,9 +24,9 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: rust-docker-web
+  name: service
   labels:
-    app: rust-docker-web
+    app: rust-service
 spec:
   type: NodePort
   ports:
@@ -35,5 +35,5 @@ spec:
     protocol: TCP
     name: http
   selector:
-    app: rust-docker-web
+    app: rust-pod
 ---
